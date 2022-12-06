@@ -21,8 +21,10 @@ The <<build,*Build and publish the release*>> phase is what's covered by the CI 
 . Announce release preparations to mailing list (https://groups.google.com/forum/#!forum/spring-data-dev)
 . 🚥 Continue with `Build and publish the release`
 
-[[build]]
-=== 🌿 Build and publish the release
+[[create-release-tag]]
+=== 🥣 Create Release Tag
+
+This can be done as a CI job, but can also be done locally in the event of error.
 
 [%header,cols="1,1"]
 |===
@@ -38,8 +40,37 @@ The <<build,*Build and publish the release*>> phase is what's covered by the CI 
 |Edit `ci/release.properties` and assign the version number of the release train you wish to release to `release.version`. (Make sure it's NOT commented out!)
 |
 
-|Commit the change to this repository
+|Commit the change to this repository (but don't push to GitHub!)
 |`$ git add ci/release.properties && git commit`
+
+|Switch to the `create-release-tag` branch
+|`$ git checkout create-release-tag`
+
+|Set the `HEAD` to `main` to point the content to what is on `main`
+|`$ git reset --hard main`
+
+|🚨 *To trigger 🛣 the creation of the release tag* `git push` the `create-release-tag` branch
+|`$ git push origin create-release-tag`
+
+|Go to https://jenkins.spring.io/view/SpringData/job/spring-data-release-create-release-tag/, Navigate to the `create-release-tag` branch.
+A job should have started. Click on the active job, and then click on *Open Blue Ocean*.
+| Monitor the release preparation process.
+
+|===
+
+WARNING: If the tag creation goes wrong and got pushed to GitHub, you'll potentially have to clean up any commits, branches, and tags.
+
+* 🚥 Continue with `Build and Distribute the Release` tasks.
+
+[[build]]
+=== 🌿 Build and Distribute the Release
+
+You should have completed the previous section before starting this one.
+
+[%header,cols="1,1"]
+|===
+|Action
+|Command
 
 |Switch to the `release` branch
 |`$ git checkout release`
@@ -48,32 +79,34 @@ The <<build,*Build and publish the release*>> phase is what's covered by the CI 
 |`$ git reset --hard main`
 
 |🚨 *To trigger 🛣 the release* `git push` the `release` branch
-|`$ git push origin release`
+|`$ git push --force origin release`
 
-|Go to https://jenkins.spring.io/view/SpringData/job/spring-data-release-release/, Navigate to the `release` branch.
+|Go to https://jenkins.spring.io/view/SpringData/job/spring-data-release-build-and-distribute/, Navigate to the `release` branch.
 A job should have started. Click on the active job, and then click on *Open Blue Ocean*.
 | Monitor the release process.
 
 |===
 
-After preparing and building (approx. 20 minutes), the Jenkins pipeline will pause, indicating it's time to smoke test the staged release, and put up a prompt: *Proceed* or *Abort*.
+The Jenkins pipeline will finish with the artifacts staged on either Maven Central or Artifactory.
 
-🚨 If you click on *Proceed*, then it will continue on to the `release conclude`/`github push`/`release distribute` phase.
+WARNING: If this CI job fails, you can repeat this CI job. To do so, you must first delete any staged Maven Central/Artifactory artifacts. Then you can manually re-launch this job from Jenkins.
 
 * For a Maven central release, go to https://s01.oss.sonatype.org/ and login.
 ** After logging in, you will find a closed Spring Data Release repository.
 ** Click the repository and then choose "Release".
 * For an artifactory release, the release will already have been staged and promoted, so there is nothing more to do.
-* 🚥 Continue with `Post-release tasks`
+* 🚥 Continue with `Post-Release tasks`
 
 *Background*
 ====
-The first CI phase includes: `release prepare` and `release build` and may take twenty minutes or so.
+The release process has two key phases: *create a release tag* following by *build and publish*.
+Once a release tag has been <<create-release-tag,created and pushed to GitHub>>, it's possible to do the <<build,second phase>> over and over until properly completed.
+If this involves Artifactory, you'll have to clean up between attempts.
+If this involves Maven Central, all you have to do is drop the release and start over.
 
-* For a maven central release, you can visit https://s01.oss.sonatype.org/, login, and inspect the staged Spring Data Release. All the Spring Data modules will inside one repository.
-* For a milestone/RC release, you can visit https://repo.spring.io/. All the Spring Data modules will be there, each module a separate "build".
+* For a Maven Central release, you can visit https://s01.oss.sonatype.org/, login, and inspect the staged Spring Data Release. All the Spring Data modules will inside one repository.
+* For a ilestone/RC release, you can visit https://repo.spring.io/. All the Spring Data modules will be there, each module a separate "build".
 
-At this point in time, we don't have official Spring Data Release smoke testing configured, so you can simply click *Proceed* if there were no issues. +
 For milestone/RC releases, Spring Data Release tools automatically promotes them in Artifactory, so if you have to delete a build, you'll ALSO have to go and delete each module individually.
 ====
 

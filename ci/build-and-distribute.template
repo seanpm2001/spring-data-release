@@ -1,5 +1,9 @@
 workspace cleanup
+
 verify github
 verify deployment
-release prepare ${VERSION}
+
+git co-tag ${VERSION}
+
 release build ${VERSION}
+release distribute ${VERSION}

@@ -25,7 +25,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.assertj.core.util.VisibleForTesting;
-
 import org.springframework.data.release.deployment.DeploymentInformation;
 import org.springframework.data.release.deployment.StagingRepository;
 import org.springframework.data.release.model.Module;

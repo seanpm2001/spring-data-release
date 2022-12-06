@@ -26,6 +26,7 @@ import org.springframework.data.release.build.BuildOperations;
 import org.springframework.data.release.deployment.DeploymentOperations;
 import org.springframework.data.release.git.GitOperations;
 import org.springframework.data.release.issues.github.GitHub;
+import org.springframework.data.release.model.TrainIteration;
 import org.springframework.data.release.sagan.SaganClient;
 import org.springframework.data.release.utils.Logger;
 import org.springframework.shell.core.annotation.CliCommand;
