@@ -44,6 +44,7 @@ import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.shell.support.table.Table;
 import org.springframework.shell.support.table.TableHeader;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -66,6 +67,13 @@ class GitCommands extends TimedCommand {
 	@CliCommand("git co")
 	public void checkout(@CliOption(key = "", mandatory = true) TrainIteration iteration) throws Exception {
 		git.checkout(iteration);
+	}
+
+	@CliCommand("git co-tag")
+	public void checkoutTag(@CliOption(key = "", mandatory = true) TrainIteration iteration) throws Exception {
+
+		update(iteration.getTrain().getName());
+		checkout(iteration);
 	}
 
 	@CliCommand("git update")

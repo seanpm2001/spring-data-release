@@ -15,7 +15,7 @@
  */
 package org.springframework.data.release.cli;
 
-import static org.springframework.data.release.model.Projects.*;
+import static org.springframework.data.release.model.Projects.COMMONS;
 
 import lombok.AccessLevel;
 import lombok.NonNull;
