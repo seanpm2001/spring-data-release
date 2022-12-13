@@ -71,7 +71,7 @@ public class DefaultDeploymentInformation implements DeploymentInformation {
 	@Override
 	public String getBuildName() {
 		return module.getProject().getFullName().concat(" - Release")
-				.concat(" - " + module.getTrainIteration().getReleaseTrainNameAndVersion());
+				.concat(" - ").concat(module.getTrainIteration().getReleaseTrainNameAndVersion());
 	}
 
 	/*

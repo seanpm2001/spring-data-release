@@ -44,7 +44,6 @@ import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.shell.support.table.Table;
 import org.springframework.shell.support.table.TableHeader;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
