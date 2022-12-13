@@ -8,7 +8,7 @@
 
 The <<pre-release,*Pre-Release tasks*>> and <<post-release,*Post-Release tasks*>> phases of making a release (opening tickets/closing tickets) is still done manually.
 
-The <<build,*Build and publish the release*>> phase is what's covered by the CI server.
+The <<create-release-tag,*Create Release Tag*>> and <<build,*Build and Distribute the Release*>> phase is what's covered by the CI server.
 
 [[pre-release]]
 === 🍃 Pre-Release tasks
