@@ -862,7 +862,12 @@ public class GitOperations {
 				logger.log(module, "git log");
 				RevCommit latestCommit = git.log().call().iterator().next();
 				logger.log(project, latestCommit.toString());
-				logger.log(project, "Signature: \n" + new String(latestCommit.getRawGpgSignature()));
+
+                if (latestCommit.getRawGpgSignature() != null) {
+                    logger.log(project, "Signature: \n" + new String(latestCommit.getRawGpgSignature()));
+                } else {
+                    logger.log(project, "Signature: No raw GPG signature found.");
+                }
 				logger.log(project, "Message: \n====" + latestCommit.getFullMessage() + "\n====\n");
                 logger.log(project, "Author: " + latestCommit.getAuthorIdent());
                 logger.log(project, "Committer: " + latestCommit.getCommitterIdent());
