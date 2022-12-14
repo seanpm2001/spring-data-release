@@ -25,19 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
@@ -723,11 +711,13 @@ public class GitOperations {
 					.setAll(all);
 
 			if (gpg.isGpgAvailable()) {
+				logger.log(project, "Going to sign with " + gpg.getKeyname() + "...");
 				commitCommand //
 						.setSign(true) //
 						.setSigningKey(gpg.getKeyname()) //
 						.setCredentialsProvider(new GpgPassphraseProvider(gpg));
 			} else {
+				logger.log(project, "Looks like gpg is unavailable, so no signing.");
 				commitCommand.setSign(false);
 			}
 
@@ -863,15 +853,15 @@ public class GitOperations {
 				RevCommit latestCommit = git.log().call().iterator().next();
 				logger.log(project, latestCommit.toString());
 
-                if (latestCommit.getRawGpgSignature() != null) {
-                    logger.log(project, "Signature: \n" + new String(latestCommit.getRawGpgSignature()));
-                } else {
-                    logger.log(project, "Signature: No raw GPG signature found.");
-                }
+				if (latestCommit.getRawGpgSignature() != null) {
+					logger.log(project, "Signature: \n" + new String(latestCommit.getRawGpgSignature()));
+				} else {
+					logger.log(project, "Signature: No raw GPG signature found.");
+				}
 				logger.log(project, "Message: \n====" + latestCommit.getFullMessage() + "\n====\n");
-                logger.log(project, "Author: " + latestCommit.getAuthorIdent());
-                logger.log(project, "Committer: " + latestCommit.getCommitterIdent());
-                System.out.println(latestCommit);
+				logger.log(project, "Author: " + latestCommit.getAuthorIdent());
+				logger.log(project, "Committer: " + latestCommit.getCommitterIdent());
+				System.out.println(latestCommit);
 			});
 		});
 
