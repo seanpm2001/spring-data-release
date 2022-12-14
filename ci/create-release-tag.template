@@ -5,4 +5,5 @@ verify github
 release prepare ${VERSION}
 release conclude ${VERSION}
 
+git log ${VERSION}
 # github push ${VERSION}

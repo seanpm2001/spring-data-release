@@ -94,6 +94,11 @@ class GitCommands extends TimedCommand {
 		return git.getPreviousIteration(iteration).toString();
 	}
 
+	@CliCommand("git log")
+	public void log(@CliOption(key = "", mandatory = true) TrainIteration iteration) {
+		git.log(iteration);
+	}
+
 	@CliCommand("git changelog")
 	public String changelog(@CliOption(key = "", mandatory = true) TrainIteration iteration,
 			@CliOption(key = "module") String moduleName) {

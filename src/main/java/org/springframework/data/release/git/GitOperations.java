@@ -849,6 +849,30 @@ public class GitOperations {
 		});
 	}
 
+	public void log(TrainIteration iteration) {
+
+		Assert.notNull(iteration, "Train iteration must not be null!");
+
+		ExecutionUtils.run(executor, iteration, module -> {
+
+			Project project = module.getProject();
+
+			doWithGit(project, git -> {
+
+				logger.log(module, "git log");
+				RevCommit latestCommit = git.log().call().iterator().next();
+				logger.log(project, latestCommit.toString());
+				logger.log(project, "Signature: \n" + new String(latestCommit.getRawGpgSignature()));
+				logger.log(project, "Message: \n====" + latestCommit.getFullMessage() + "\n====\n");
+                logger.log(project, "Author: " + latestCommit.getAuthorIdent());
+                logger.log(project, "Committer: " + latestCommit.getCommitterIdent());
+                System.out.println(latestCommit);
+			});
+		});
+
+		logger.log(iteration, "Successfully checked out projects.");
+	}
+
 	public void removeTags(TrainIteration iteration) {
 
 		ExecutionUtils.run(executor, iteration, module -> {
