@@ -3,7 +3,7 @@ workspace cleanup
 verify github
 
 release prepare ${VERSION}
-release conclude ${VERSION}
-
 git log ${VERSION}
+#release conclude ${VERSION}
+
 # github push ${VERSION}
